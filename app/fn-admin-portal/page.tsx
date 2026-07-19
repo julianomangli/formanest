@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Nav } from "@/components/Nav";
 import { getAnalytics } from "@/lib/db";
 import { formatEuro } from "@/lib/money";
+import { getSaleRecommendations } from "@/lib/sale-engine";
 
 async function login(formData: FormData) {
   "use server";
@@ -36,6 +37,8 @@ export default async function AdminPage() {
   }
 
   const analytics = getAnalytics();
+  const saleDate = new Date();
+  const saleRecommendations = getSaleRecommendations(analytics.products, saleDate).slice(0, 6);
   return (
     <main className="shell">
       <Nav />
@@ -49,6 +52,29 @@ export default async function AdminPage() {
           <div className="stat-card"><span className="muted">Profit</span><strong>{formatEuro(analytics.totals.profit)}</strong></div>
           <div className="stat-card"><span className="muted">Visits</span><strong>{analytics.totals.visits}</strong></div>
           <div className="stat-card"><span className="muted">Bought</span><strong>{analytics.totals.bought}</strong></div>
+        </div>
+        <div className="table-card" style={{ marginTop: 18 }}>
+          <h2>Infinite sale machine</h2>
+          <p className="muted">
+            Today&apos;s sale picks are generated from date seasonality, visits, likes, purchases, stock pressure, trend score, and the private minimum profit rule.
+          </p>
+          <table>
+            <thead><tr><th>Rank</th><th>Product</th><th>Season</th><th>Score</th><th>Sale price</th><th>Discount</th><th>Projected profit</th><th>Why</th></tr></thead>
+            <tbody>
+              {saleRecommendations.map((item, index) => (
+                <tr key={item.product.id}>
+                  <td>{index + 1}</td>
+                  <td>{item.product.name}</td>
+                  <td>{item.season}</td>
+                  <td>{item.score}</td>
+                  <td>{formatEuro(item.salePrice)}</td>
+                  <td>{formatEuro(item.suggestedDiscount)}</td>
+                  <td>{formatEuro(item.projectedProfit)}</td>
+                  <td>{item.reason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <div className="table-card" style={{ marginTop: 18 }}>
           <h2>All products</h2>

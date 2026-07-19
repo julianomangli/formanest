@@ -13,18 +13,18 @@ export default function InsightsPage() {
             <span className="eyebrow">Real-world trend engine</span>
             <h1>Pricing and recommendations</h1>
           </div>
-          <p>The site ranks products with customer activity, demand signals, trend score, stock, and gross margin.</p>
+          <p>The site ranks products with customer activity, demand signals, trend score, and stock availability.</p>
         </div>
         <div className="stat-grid">
           <div className="stat-card"><span className="muted">Tracked visits</span><strong>{analytics.totals.visits}</strong></div>
           <div className="stat-card"><span className="muted">Likes</span><strong>{analytics.totals.likes}</strong></div>
           <div className="stat-card"><span className="muted">Units bought</span><strong>{analytics.totals.bought}</strong></div>
-          <div className="stat-card"><span className="muted">Modeled profit</span><strong>{formatEuro(analytics.totals.profit)}</strong></div>
+          <div className="stat-card"><span className="muted">Top picks</span><strong>{analytics.trending.length}</strong></div>
         </div>
         <div className="table-card" style={{ marginTop: 18 }}>
           <h2>Recommendation priority</h2>
           <table>
-            <thead><tr><th>Product</th><th>Trend</th><th>Visits</th><th>Likes</th><th>Bought</th><th>Margin</th></tr></thead>
+            <thead><tr><th>Product</th><th>Trend</th><th>Visits</th><th>Likes</th><th>Bought</th><th>Stock</th></tr></thead>
             <tbody>
               {analytics.trending.map((product) => (
                 <tr key={product.id}>
@@ -33,7 +33,7 @@ export default function InsightsPage() {
                   <td>{product.visits}</td>
                   <td>{product.likes}</td>
                   <td>{product.bought}</td>
-                  <td>{formatEuro(product.price - product.supplierCost)}</td>
+                  <td>{product.stock}</td>
                 </tr>
               ))}
             </tbody>

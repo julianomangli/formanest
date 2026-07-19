@@ -18,7 +18,7 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="muted">{product.description}</p>
         <div className="price-row">
           <span className="price">{formatEuro(product.price)}</span>
-          <span className="pill">{formatEuro(product.price - product.supplierCost)} margin</span>
+          <span className="pill">{product.stock} in stock</span>
         </div>
         <div className="card-actions">
           <Link className="btn" href={`/product/${product.id}`}>

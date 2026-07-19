@@ -27,7 +27,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           <p className="muted">{product.details}</p>
           <div className="price-row">
             <span className="price">{formatEuro(product.price)}</span>
-            <span className="pill">Profit {formatEuro(product.price - product.supplierCost)}</span>
+            <span className="pill">{product.stock} available</span>
           </div>
           <div className="specs">
             <div className="spec"><span>Materials</span><strong>{product.materials}</strong></div>
@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         <div className="wrap">
           <div className="section-head">
             <h2>Recommended with this</h2>
-            <p>Based on trend score, customer interest, and margin strength.</p>
+            <p>Based on customer interest, room fit, trend score, and availability.</p>
           </div>
           <div className="grid">{recommended.map((item) => <ProductCard product={item} key={item.id} />)}</div>
         </div>

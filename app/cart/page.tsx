@@ -3,6 +3,7 @@ import { Nav } from "@/components/Nav";
 import { getProducts } from "@/lib/db";
 
 export default function CartPage() {
+  const products = getProducts().map(({ id, name, category, image, price }) => ({ id, name, category, image, price }));
   return (
     <main className="shell">
       <Nav />
@@ -14,7 +15,7 @@ export default function CartPage() {
           </div>
           <p>Review your furniture order before opening the payment page.</p>
         </div>
-        <CartClient products={getProducts()} />
+        <CartClient products={products} />
       </section>
     </main>
   );

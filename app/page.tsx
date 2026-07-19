@@ -14,16 +14,16 @@ export default function Home() {
       <section className="wrap hero">
         <div>
           <span className="eyebrow">FormaNest Furniture</span>
-          <h1>Modern rooms, priced for comfort and profit.</h1>
+          <h1>Modern rooms, calmly priced.</h1>
           <p>
-            A furniture store built around customer taste, live product signals, and healthy margins.
-            Every product is priced with at least 100 euros of profit while staying sharp for buyers.
+            A furniture store built around customer taste, live product signals, and pieces that make
+            homes feel finished without making the buying process feel heavy.
           </p>
           <Link className="btn" href="/shop">Shop the collection <ArrowRight size={17} /></Link>
           <div className="hero-strip">
             <div className="metric"><strong>{analytics.totals.visits}</strong><span>product visits tracked</span></div>
             <div className="metric"><strong>{analytics.totals.likes}</strong><span>customer likes</span></div>
-            <div className="metric"><strong>€{analytics.totals.averageMargin}+</strong><span>average product margin</span></div>
+            <div className="metric"><strong>{analytics.trending.length}</strong><span>smart recommendations</span></div>
           </div>
         </div>
         <div className="hero-media">
@@ -42,14 +42,14 @@ export default function Home() {
               <span className="eyebrow">Recommended now</span>
               <h2>Trending pieces</h2>
             </div>
-            <p>Recommendations combine customer visits, likes, purchases, trend score, and profit margin.</p>
+            <p>Recommendations combine customer visits, likes, purchases, trend score, and product availability.</p>
           </div>
           <div className="grid">
             {featured.map((product) => <ProductCard product={product} key={product.id} />)}
           </div>
         </div>
       </section>
-      <footer className="footer"><div className="wrap">FormaNest · Better furniture commerce, built with margin intelligence.</div></footer>
+      <footer className="footer"><div className="wrap">FormaNest · Modern furniture with a quieter, smarter shopping experience.</div></footer>
     </main>
   );
 }

@@ -13,7 +13,7 @@ export default function ShopPage() {
             <span className="eyebrow">Catalog</span>
             <h1>Shop furniture</h1>
           </div>
-          <p>Realistic products, real images, detailed cards, and pricing that protects profit.</p>
+          <p>Realistic products, real images, detailed cards, and a clean buying experience.</p>
         </div>
         <div className="grid">
           {products.map((product) => <ProductCard product={product} key={product.id} />)}

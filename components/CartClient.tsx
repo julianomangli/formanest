@@ -6,7 +6,9 @@ import { Product } from "@/lib/types";
 import { formatEuro } from "@/lib/money";
 import { CartItem } from "@/lib/cart";
 
-export function CartClient({ products }: { products: Product[] }) {
+type CartProduct = Pick<Product, "id" | "name" | "category" | "image" | "price">;
+
+export function CartClient({ products }: { products: CartProduct[] }) {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   useEffect(() => {
@@ -24,8 +26,6 @@ export function CartClient({ products }: { products: Product[] }) {
     .filter((line): line is { item: CartItem; product: Product } => Boolean(line.product));
 
   const subtotal = useMemo(() => lines.reduce((sum, line) => sum + line.product.price * line.item.quantity, 0), [lines]);
-  const profit = useMemo(() => lines.reduce((sum, line) => sum + (line.product.price - line.product.supplierCost) * line.item.quantity, 0), [lines]);
-
   async function checkout() {
     const response = await fetch("/api/checkout", {
       method: "POST",
@@ -67,7 +67,6 @@ export function CartClient({ products }: { products: Product[] }) {
         <h2>Order summary</h2>
         <div className="row"><span>Subtotal</span><strong>{formatEuro(subtotal)}</strong></div>
         <div className="row"><span>Estimated shipping</span><strong>Free</strong></div>
-        <div className="row"><span>Built-in profit</span><strong>{formatEuro(profit)}</strong></div>
         <button className="btn full" disabled={!lines.length} onClick={checkout}>Checkout</button>
         <p className="muted">Real Stripe Checkout is used when Stripe keys are configured. Otherwise, this opens the private test checkout page.</p>
       </aside>
