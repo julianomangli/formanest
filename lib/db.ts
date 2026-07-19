@@ -1,9 +1,11 @@
 import fs from "fs";
+import os from "os";
 import path from "path";
 import { DbShape, Product, SiteEvent } from "./types";
 import { seedProducts } from "./seed";
 
-const dbPath = path.join(process.cwd(), ".data", "formanest-db.json");
+const dbRoot = process.env.VERCEL ? os.tmpdir() : path.join(process.cwd(), ".data");
+const dbPath = path.join(dbRoot, "formanest-db.json");
 
 function initialDb(): DbShape {
   return { products: seedProducts, events: [] };
