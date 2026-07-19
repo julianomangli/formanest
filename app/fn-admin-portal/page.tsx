@@ -16,7 +16,7 @@ async function login(formData: FormData) {
   redirect("/fn-admin-portal?error=1");
 }
 
-export default async function AdminPage() {
+export default async function AdminPage({ searchParams }: { searchParams: Promise<{ saleDate?: string }> }) {
   const jar = await cookies();
   const allowed = jar.get("formanest-admin")?.value === "ok";
   if (!allowed) {
@@ -36,8 +36,9 @@ export default async function AdminPage() {
     );
   }
 
+  const params = await searchParams;
   const analytics = getAnalytics();
-  const saleDate = new Date();
+  const saleDate = params.saleDate ? new Date(`${params.saleDate}T00:00:00.000Z`) : new Date();
   const saleRecommendations = getSaleRecommendations(analytics.products, saleDate).slice(0, 6);
   return (
     <main className="shell">
@@ -58,6 +59,13 @@ export default async function AdminPage() {
           <p className="muted">
             Today&apos;s sale picks are generated from date seasonality, visits, likes, purchases, stock pressure, trend score, and the private minimum profit rule.
           </p>
+          <form action="/fn-admin-portal" style={{ display: "flex", gap: 10, alignItems: "end", margin: "16px 0", flexWrap: "wrap" }}>
+            <div className="field" style={{ margin: 0 }}>
+              <label>Sale date</label>
+              <input type="date" name="saleDate" defaultValue={params.saleDate || saleDate.toISOString().slice(0, 10)} />
+            </div>
+            <button className="btn secondary">Calculate sale plan</button>
+          </form>
           <table>
             <thead><tr><th>Rank</th><th>Product</th><th>Season</th><th>Score</th><th>Sale price</th><th>Discount</th><th>Projected profit</th><th>Why</th></tr></thead>
             <tbody>
